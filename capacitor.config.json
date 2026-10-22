@@ -1,0 +1,8 @@
+{
+  "appId": "fr.missionprompt.app",
+  "appName": "Mission Prompt",
+  "webDir": "dist/app",
+  "android": {
+    "backgroundColor": "#0A0D2A"
+  }
+}

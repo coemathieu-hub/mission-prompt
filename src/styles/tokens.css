@@ -1,0 +1,70 @@
+/* Tokens de design : mêmes noms en clair (aube) et en sombre (nuit). */
+:root{
+  color-scheme:light;
+  --violet:#7C3AED; --cyan:#06B6D4; --coral:#FB7185;
+  --green:#22C55E; --amber:#F59E0B; --red:#F43F5E;
+  --font-title:'Space Grotesk Variable','Space Grotesk',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-body:'Inter Variable','Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --r-lg:22px; --r-md:16px; --r-sm:12px;
+  --primary-grad:linear-gradient(135deg,#7C3AED 0%,#0E7490 100%);
+  --mic-idle:linear-gradient(135deg,#7C3AED 0%,#06B6D4 100%);
+  --mic-rec:linear-gradient(135deg,#F43F5E 0%,#BE123C 100%);
+  --mic-pause:linear-gradient(135deg,#D97706 0%,#B45309 100%);
+  --fuel-grad:linear-gradient(90deg,#F43F5E 0%,#F59E0B 50%,#22C55E 100%);
+
+  /* Clair : ciel d'aube */
+  --page-bg:#ECE6F6;
+  --bar-bg:rgba(255,255,255,.72);
+  --sky:linear-gradient(172deg,#FFE1D2 0%,#F6E7FF 46%,#E2ECFF 100%);
+  --aur-1:#C4B5FD; --aur-2:#FDBA8C; --aur-3:#A5F3FC;
+  --aur-opacity:.6; --aur-blend:normal; --stars-opacity:0;
+  --text:#1E1B4B; --text-2:#4A4677; --text-3:#615D8C;
+  --glass:rgba(255,255,255,.5); --glass-strong:rgba(255,255,255,.74);
+  --glass-border:rgba(255,255,255,.85); --glass-shadow:0 8px 28px rgba(76,29,149,.10);
+  --input-bg:rgba(255,255,255,.72);
+  --line:rgba(30,27,75,.10); --line-strong:rgba(30,27,75,.28); --track:rgba(30,27,75,.10);
+  --chip-bg:rgba(124,58,237,.10); --chip-fg:#5B21B6;
+  --st-draft-bg:#FEF3C7; --st-draft-fg:#92400E;
+  --st-ready-bg:#DCFCE7; --st-ready-fg:#166534;
+  --st-sent-bg:#CFFAFE; --st-sent-fg:#155E75;
+  --rec-fg:#BE123C; --pause-fg:#92400E;
+  --focus:#6D28D9; --frame:rgba(30,27,75,.18); --toast-bg:#FFFFFF;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --page-bg:#02030A; --bar-bg:rgba(6,8,25,.72);
+    --sky:radial-gradient(130% 75% at 50% -5%,#1A1650 0%,#0A0D2A 48%,#04050F 100%);
+    --aur-1:#7C3AED; --aur-2:#06B6D4; --aur-3:#FB7185;
+    --aur-opacity:.5; --aur-blend:screen; --stars-opacity:1;
+    --text:#EEF0FF; --text-2:#B9BEE3; --text-3:#9CA2CC;
+    --glass:rgba(255,255,255,.06); --glass-strong:rgba(255,255,255,.11);
+    --glass-border:rgba(255,255,255,.14); --glass-shadow:0 10px 40px rgba(0,0,0,.35);
+    --input-bg:rgba(8,10,35,.45);
+    --line:rgba(255,255,255,.10); --line-strong:rgba(255,255,255,.30); --track:rgba(255,255,255,.10);
+    --chip-bg:rgba(139,92,246,.22); --chip-fg:#DDD6FE;
+    --st-draft-bg:rgba(245,158,11,.18); --st-draft-fg:#FCD34D;
+    --st-ready-bg:rgba(34,197,94,.18); --st-ready-fg:#86EFAC;
+    --st-sent-bg:rgba(6,182,212,.18); --st-sent-fg:#67E8F9;
+    --rec-fg:#FDA4AF; --pause-fg:#FCD34D;
+    --focus:#22D3EE; --frame:rgba(255,255,255,.14); --toast-bg:#1B1E4A;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page-bg:#02030A; --bar-bg:rgba(6,8,25,.72);
+  --sky:radial-gradient(130% 75% at 50% -5%,#1A1650 0%,#0A0D2A 48%,#04050F 100%);
+  --aur-1:#7C3AED; --aur-2:#06B6D4; --aur-3:#FB7185;
+  --aur-opacity:.5; --aur-blend:screen; --stars-opacity:1;
+  --text:#EEF0FF; --text-2:#B9BEE3; --text-3:#9CA2CC;
+  --glass:rgba(255,255,255,.06); --glass-strong:rgba(255,255,255,.11);
+  --glass-border:rgba(255,255,255,.14); --glass-shadow:0 10px 40px rgba(0,0,0,.35);
+  --input-bg:rgba(8,10,35,.45);
+  --line:rgba(255,255,255,.10); --line-strong:rgba(255,255,255,.30); --track:rgba(255,255,255,.10);
+  --chip-bg:rgba(139,92,246,.22); --chip-fg:#DDD6FE;
+  --st-draft-bg:rgba(245,158,11,.18); --st-draft-fg:#FCD34D;
+  --st-ready-bg:rgba(34,197,94,.18); --st-ready-fg:#86EFAC;
+  --st-sent-bg:rgba(6,182,212,.18); --st-sent-fg:#67E8F9;
+  --rec-fg:#FDA4AF; --pause-fg:#FCD34D;
+  --focus:#22D3EE; --frame:rgba(255,255,255,.14); --toast-bg:#1B1E4A;
+}
