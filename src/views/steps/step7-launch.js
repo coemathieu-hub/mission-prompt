@@ -64,7 +64,7 @@ export function stepLaunch({ ctx, m, scroll, bottom, save, tip, goto, onChecks }
     launchOverlay({
       message: 'Prompt copié 📋<br>Colle-le dans Claude Code ou dans Claude.',
       actions: [
-        { label: '🛸 Au hangar', primary: true, onClick: () => ctx.nav('/') },
+        { label: '🏠 Accueil', primary: true, onClick: () => ctx.nav('/') },
         { label: 'Fermer' },
       ],
     });

@@ -1,7 +1,7 @@
 // 📖 Guide hors ligne : le parcours en images, la dictée, et une FAQ simple.
-import { h, icon } from '../ui/dom.js';
+import { h } from '../ui/dom.js';
 import { FAQ, GUIDE_STEPS } from '../data/help.js';
-import { tabbar } from './hangar.js';
+import { tabbar, homeButton } from './hangar.js';
 
 // Illustrations SVG (dessinées à la main, aucun fichier externe).
 const ART_FLOW = `<svg viewBox="0 0 320 90" role="img" aria-label="Tes idées deviennent un prompt, que Claude transforme en livrable">
@@ -26,7 +26,7 @@ export function guideView(ctx) {
   const section = (title, ...children) => h('section', { class: 'glass card guide-sec' }, h('h2', { class: 'sec-title' }, title), ...children);
   const el = h('div', { class: 'screen guide' },
     h('header', { class: 'app-top' },
-      h('button', { class: 'icon-btn', 'aria-label': 'Retour au hangar', onclick: () => ctx.nav('/') }, icon('back')),
+      homeButton(ctx),
       h('div', { class: 'step-meta' }, h('strong', {}, '📖 Guide')),
     ),
     h('div', { class: 'scroll' },

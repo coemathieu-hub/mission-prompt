@@ -5,7 +5,7 @@ import { saveFile, pickFile, setVibrations } from '../core/platform.js';
 import { applyTheme } from '../ui/theme.js';
 import { createDemoMission } from '../data/demo.js';
 import { DEFAULT_GLOSSARY, DEFAULT_FILLERS } from '../data/defaults.js';
-import { tabbar } from './hangar.js';
+import { tabbar, homeButton } from './hangar.js';
 
 export function settingsView(ctx) {
   const { store } = ctx;
@@ -110,7 +110,7 @@ export function settingsView(ctx) {
   const section = (title, ...children) => h('section', { class: 'glass card' }, h('h2', { class: 'sec-title' }, title), ...children);
   const el = h('div', { class: 'screen settings' },
     h('header', { class: 'app-top' },
-      h('button', { class: 'icon-btn', 'aria-label': 'Retour au hangar', onclick: () => ctx.nav('/') }, icon('back')),
+      homeButton(ctx),
       h('div', { class: 'step-meta' }, h('strong', {}, '⚙️ Réglages')),
     ),
     h('div', { class: 'scroll' },

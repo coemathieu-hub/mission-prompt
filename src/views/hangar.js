@@ -12,6 +12,14 @@ const FILTERS = [
   ['draft', '📝 Brouillon'], ['ready', '✅ Prête'], ['sent', '📤 Envoyée'],
 ];
 
+/** Bouton « Accueil » présent en haut de chaque écran (sauf l'accueil lui-même). */
+export function homeButton(ctx) {
+  return h('button', {
+    class: 'icon-btn home-btn', 'aria-label': "Retour à l'accueil", title: 'Accueil', 'data-tour': 'home',
+    onclick: () => ctx.nav('/'),
+  }, icon('home'));
+}
+
 export function tabbar(ctx, current) {
   const tab = (path, emoji, label) => h('button', {
     'aria-current': current === path ? 'page' : null, onclick: () => ctx.nav(path), 'data-tour': `tab-${label.toLowerCase()}`,

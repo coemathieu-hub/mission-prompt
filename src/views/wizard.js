@@ -4,6 +4,7 @@ import { sheet } from '../ui/overlay.js';
 import { trajectory } from '../ui/trajectory.js';
 import { checkMission } from '../text/checker.js';
 import { STEPS } from '../data/defaults.js';
+import { homeButton } from './hangar.js';
 import { BIP_TIPS, STEP_HELP } from '../data/help.js';
 import { stepTitle } from './steps/step1-title.js';
 import { stepContext } from './steps/step2-context.js';
@@ -46,7 +47,7 @@ export function wizardView(ctx, { id, step }) {
   const bottom = h('div', { class: 'bottom' });
   const screen = h('div', { class: `screen wizard step-${n}` },
     h('header', { class: 'app-top' },
-      h('button', { class: 'icon-btn', 'aria-label': 'Retour au hangar', onclick: () => ctx.nav('/') }, icon('back')),
+      homeButton(ctx),
       h('div', { class: 'step-meta' },
         h('small', {}, `Étape ${n} sur 7`),
         h('strong', {}, `${STEPS[n - 1].emoji} ${STEPS[n - 1].title}`)),
@@ -100,7 +101,7 @@ export function wizardView(ctx, { id, step }) {
   }, 120));
 
   const nav = h('nav', { class: 'nav row hide-typing' },
-    h('button', { class: 'btn', onclick: () => (n > 1 ? goto(n - 1) : ctx.nav('/')) }, icon('back'), n > 1 ? 'Retour' : 'Hangar'),
+    h('button', { class: 'btn', onclick: () => (n > 1 ? goto(n - 1) : ctx.nav('/')) }, icon('back'), n > 1 ? 'Retour' : 'Accueil'),
     n < 7 && h('button', { class: 'btn btn-primary', 'data-tour': 'next', onclick: () => goto(n + 1) }, 'Suivant', icon('next')),
   );
 

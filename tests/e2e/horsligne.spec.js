@@ -17,7 +17,7 @@ test('fichier HTML autonome : marche hors ligne, sans aucune requête réseau', 
   await page.locator('.tour .link-btn').click();
   await page.click('[data-tour="new"]');
   await page.fill('#title', 'Mission créée hors ligne');
-  await page.click('[aria-label="Retour au hangar"]');
+  await page.click('[aria-label="Retour à l\'accueil"]');
   await expect(page.locator('.mission', { hasText: 'Mission créée hors ligne' })).toHaveCount(1);
   await page.reload();
   await expect(page.locator('.mission', { hasText: 'Mission créée hors ligne' })).toHaveCount(1);

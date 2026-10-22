@@ -23,7 +23,7 @@ test('recherche, filtres, dupliquer, supprimer avec confirmation et annuler', as
   await openApp(page);
   await page.click('[data-tour="new"]');
   await page.fill('#title', 'Comparatif Zeendoc Yooz');
-  await page.click('[aria-label="Retour au hangar"]');
+  await page.click('[aria-label="Retour à l\'accueil"]');
   await expect(page.locator('.mission')).toHaveCount(2);
 
   await page.fill('.search input', 'yooz');
@@ -73,4 +73,20 @@ test('export puis import de la sauvegarde JSON', async ({ page }) => {
   const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('text=Importer')]);
   await chooser.setFiles({ name: 'sauvegarde.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(json)) });
   await expect(page.locator('.mission', { hasText: 'Mission importée' })).toHaveCount(1);
+});
+
+test('bouton Accueil présent sur chaque écran', async ({ page }) => {
+  await openApp(page);
+  await expect(page.locator('[data-tour="home"]')).toHaveCount(0); // déjà sur l'accueil
+  const screens = [
+    async () => page.click('.mission.demo .mission-open'),
+    ...[0, 1, 2, 3, 4, 5, 6].map(i => async () => { await page.click('.mission.demo .mission-open'); await page.locator('.planet').nth(i).click(); }),
+    async () => page.click('[data-tour="tab-réglages"]'),
+    async () => page.click('[data-tour="tab-guide"]'),
+  ];
+  for (const go of screens) {
+    await go();
+    await page.click('[data-tour="home"]');
+    await expect(page.locator('.screen.hangar')).toBeVisible();
+  }
 });
