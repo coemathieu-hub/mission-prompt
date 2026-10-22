@@ -4,10 +4,18 @@ import {
 } from '../data/defaults.js';
 
 export const OPTIMIZE_PREAMBLE =
-  'Je veux faire réaliser ce besoin par Claude Code. Analyse-le, pose-moi tes questions à choix multiples si nécessaire, puis rédige le prompt Claude Code le plus complet et précis possible.';
+  'Je veux faire réaliser ce besoin par Claude Code. Analyse-le, pose-moi tes questions à choix multiples si nécessaire, puis rédige le prompt Claude Code le plus complet et précis possible. Garde la section « Méthode » telle quelle dans le prompt final.';
 
-export const METHOD =
-  'Avant de coder, pose-moi tes questions sous forme de choix multiples si un point est ambigu, propose un plan, puis code par étapes.';
+// Méthode « brainstorming » condensée : comprendre le pourquoi avant de construire.
+export const METHOD = `Avant d'écrire la moindre ligne de code :
+1. **Comprends le pourquoi.** Lis d'abord tout ce que je t'ai fourni (fichiers, projet existant) : ne me demande jamais ce qui y figure déjà. Si tout ce qui compte est dans cette demande, dis-le et passe à l'étape 3.
+2. **Questionne-moi une question à la fois**, sous forme de choix multiples, en commençant par le point qui changerait le plus ce que tu vas construire, et dis-moi pourquoi tu la poses. Reformule au fur et à mesure ce que tu as compris, en séparant ce que j'ai dit de ce que tu proposes, puis demande-moi ce qui manque.
+3. **Propose 2 ou 3 approches** dans un message dédié : ce que chacune implique et sacrifie, ta recommandation et pourquoi. Je choisis.
+4. **Rédige un document de conception** (court si la demande est petite) : intention, objectifs, non-objectifs, ce qui ferait échouer le projet même s'il fonctionne, contraintes, approche retenue, et les choix que tu as faits à ma place, signalés comme tels. Relis-le comme le développeur qui devrait le réaliser sans moi, et pose-moi en une fois les questions qui restent.
+5. **Attends mon accord sur ce document** : pas de code, pas d'installation, pas de création de projet avant.
+6. Ensuite seulement : un plan par étapes, puis le code étape par étape.
+
+Si c'est visuel (écran, page, mise en page), propose-moi une maquette jetable avant de trancher. Si je te dis de foncer, fonce, en annonçant en une ligne tes choix techniques importants.`;
 
 const byId = (list, id) => list.find(x => x.id === id);
 const lines = text => (text || '').split('\n').map(l => l.trim()).filter(Boolean);

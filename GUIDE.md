@@ -107,7 +107,12 @@ Touche **🚀 Nouvelle mission**. Une fusée avance de planète en planète, une
 1. Ouvre ton terminal dans le dossier de ton projet.
 2. Lance `claude`.
 3. Colle le prompt : **Ctrl + V** (Mac : **Cmd + V**), puis **Entrée**.
-4. Claude Code te pose ses questions à choix multiples, propose un plan, puis code par étapes.
+4. Le prompt demande à Claude Code de **comprendre avant de coder** :
+   - il te pose ses questions **une à la fois**, en choix multiples ;
+   - il te propose **2 ou 3 façons de faire** et tu choisis ;
+   - il écrit un court **document de conception** et **attend ton accord** ;
+   - ensuite seulement, il fait un plan et code étape par étape.
+   Pressé ? Réponds-lui « fonce » : il passe directement à l'action.
 
 ### Sur le web ou le téléphone (claude.ai/code)
 1. Ouvre **claude.ai/code** (ou l'app Claude, onglet Code).

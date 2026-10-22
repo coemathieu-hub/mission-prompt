@@ -72,3 +72,22 @@ describe('aperçu Markdown', () => {
     expect(html).toBe('<h1>T</h1><p>Un &lt;b&gt;x&lt;/b&gt;</p><ol><li>a</li><li>b<br>suite</li></ol><ul><li><strong>gras</strong><ul><li>sous</li></ul></li></ul>');
   });
 });
+
+describe('méthode brainstorming', () => {
+  it('pose le cadre : pourquoi, une question à la fois, approches, conception validée avant le code', () => {
+    const p = buildPrompt(createMission({ title: 'Test' }));
+    const method = p.slice(p.indexOf('## Méthode'));
+    expect(method).toContain('Comprends le pourquoi');
+    expect(method).toContain('une question à la fois');
+    expect(method).toContain('choix multiples');
+    expect(method).toContain('Propose 2 ou 3 approches');
+    expect(method).toContain('document de conception');
+    expect(method).toContain('Attends mon accord');
+    expect(method).toMatch(/Si je te dis de foncer, fonce/);
+  });
+  it('rendu Markdown : liste numérotée avec titres en gras', () => {
+    const html = renderMarkdown(`## Méthode\n${METHOD}`);
+    expect(html).toContain('<ol><li><strong>Comprends le pourquoi.</strong>');
+    expect((html.match(/<li>/g) || []).length).toBe(6);
+  });
+});

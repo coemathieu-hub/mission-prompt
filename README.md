@@ -6,6 +6,7 @@ Application qui transforme des idées **dictées ou tapées** en **prompt clair 
 - Dictée vocale avec Pause / Reprendre / Stop / Supprimer (+ « Annuler » pendant 5 s).
 - Correction locale sans IA : ponctuation dictée, mots parasites, mots doublés, glossaire, typographie française.
 - Contrôleur de mission + jauge « Carburant ⛽ ».
+- Section « Méthode » du prompt inspirée du skill *brainstorming* (version française condensée) : Claude Code comprend le pourquoi, pose une question à la fois, propose 2-3 approches et fait valider une conception avant de coder.
 - Hangar 🛸 (historique), réglages, tuto « Premier vol », guide hors ligne.
 - **Aucune IA, aucun serveur, aucune donnée envoyée par l'app.** Tout reste sur l'appareil (IndexedDB).
 
