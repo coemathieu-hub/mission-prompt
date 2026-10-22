@@ -38,7 +38,9 @@ export function createMission(overrides = {}) {
     destination: 'code',
     reviewed: false,
     promptOverride: null,
+    liveTake: null,
     lastStep: 1,
+    maxStep: 1,
     ...overrides,
   };
 }

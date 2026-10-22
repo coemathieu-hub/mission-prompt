@@ -63,3 +63,15 @@ describe('contrôleur de mission', () => {
     expect(alerts.find(x => x.id === 'sources-kind-image').level).toBe('info');
   });
 });
+
+describe('mentions de fichiers', () => {
+  const withIdea = text => createMission({ ideas: [createIdea(text)] });
+  it('ignore le format de sortie (« exporter en PDF », « générer un Excel »)', () => {
+    expect(fileMentions(withIdea('Exporter le devis en PDF avec le logo.')).map(x => x.word)).toEqual(['logo']);
+    expect(fileMentions(withIdea('Générer un fichier Excel récapitulatif.')).map(x => x.word)).toEqual(['fichier']);
+  });
+  it('garde les fichiers à fournir', () => {
+    expect(fileMentions(withIdea('Importer mon Excel des tarifs.')).map(x => x.word)).toEqual(['excel']);
+    expect(fileMentions(withIdea('Le citoyen Excel')).map(x => x.word)).toEqual(['excel']);
+  });
+});

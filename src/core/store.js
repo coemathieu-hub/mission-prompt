@@ -48,7 +48,8 @@ export function createStore({ db, storage = globalThis.localStorage } = {}) {
     if (mirror?.id) {
       const known = missions.get(mirror.id);
       const deleted = ((await db.getKV('deleted')) || []).includes(mirror.id);
-      if (!deleted && (!known || (mirror.updatedAt || 0) > (known.updatedAt || 0))) {
+      // À égalité, le miroir gagne : c'est toujours la dernière écriture.
+      if (!deleted && (!known || (mirror.updatedAt || 0) >= (known.updatedAt || 0))) {
         const m = migrateMission(mirror);
         missions.set(m.id, m);
         await db.putMission(m);

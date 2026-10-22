@@ -3,6 +3,8 @@ import { viteSingleFile } from 'vite-plugin-singlefile';
 import { VitePWA } from 'vite-plugin-pwa';
 import { readFileSync } from 'node:fs';
 
+const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
+
 // Trois cibles depuis la même base de code :
 //   pwa    → dist/pwa    (GitHub Pages, installable sur iPhone)
 //   single → dist/single (un seul fichier HTML, tout inline, hors ligne)
@@ -30,7 +32,7 @@ export default defineConfig(({ mode }) => {
   return {
     base: './',
     publicDir: target === 'single' ? false : 'public',
-    define: { __TARGET__: JSON.stringify(target) },
+    define: { __TARGET__: JSON.stringify(target), __APP_VERSION__: JSON.stringify(pkg.version) },
     build: {
       outDir: `dist/${target}`,
       emptyOutDir: true,

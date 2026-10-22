@@ -23,12 +23,20 @@ const excerpt = text => {
   return words.slice(0, 6).join(' ') + (words.length > 6 ? '…' : '');
 };
 
+// « exporter en PDF », « générer un Excel » : c'est le résultat attendu, pas un fichier à fournir.
+const OUTPUT_BEFORE = /(?<![\p{L}])(?:export\p{L}*|g[ée]n[ée]r\p{L}*|cr[ée]\p{L}*|produi\p{L}*|sorti\p{L}*|t[ée]l[ée]charg\p{L}*|imprim\p{L}*|envoy\p{L}*|sous forme d['’]?|au format|en)\s+(?:(?:le|la|les|un|une|des|du|de|d['’]|tout|en|au|format|fichier|forme)\s+){0,3}$/iu;
+
 export function fileMentions(m) {
   const text = [m.title, m.goal, ...m.ideas.map(i => i.text)].join('\n');
   const found = [];
   for (const f of FILE_WORDS) {
-    const hit = text.match(f.re);
-    if (hit && !found.some(x => x.word === f.word)) found.push({ word: hit[0].toLowerCase(), kind: f.kind });
+    if (found.some(x => x.word === f.word)) continue;
+    for (const hit of text.matchAll(new RegExp(f.re.source, 'giu'))) {
+      const before = text.slice(Math.max(0, hit.index - 40), hit.index);
+      if (f.kind && OUTPUT_BEFORE.test(before)) continue;
+      found.push({ word: hit[0].toLowerCase(), kind: f.kind });
+      break;
+    }
   }
   return found;
 }
