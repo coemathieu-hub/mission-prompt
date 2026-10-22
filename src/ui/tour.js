@@ -87,8 +87,8 @@ export function startTour(ctx) {
   async function finish(done) {
     removeEventListener('resize', place);
     document.removeEventListener('keydown', onKey);
+    await ctx.store.updateSettings({ tutorialDone: true }); // enregistré avant de fermer
     layer.remove();
-    await ctx.store.updateSettings({ tutorialDone: true });
     ctx.nav('/');
     if (done) ctx.toast('À toi de jouer ! Lance ta première mission 🚀');
   }
