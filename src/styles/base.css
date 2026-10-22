@@ -1,0 +1,86 @@
+/* Base, ciel animé et mise en page plein écran (mobile d'abord, utilisable à une main). */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; height: 100%; }
+body {
+  margin: 0; height: 100%; overflow: hidden;
+  background: var(--sky); color: var(--text);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: default; opacity: .5; }
+h1, h2, h3, p { margin: 0; }
+a { color: var(--chip-fg); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ic { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic-sm { width: 18px; height: 18px; }
+.ic-xl { width: 40px; height: 40px; }
+
+/* ---------- Ciel : aurore + étoiles en parallaxe ---------- */
+.sky { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: var(--sky); }
+.blob { position: absolute; width: 95vmax; height: 48vmax; border-radius: 50%; filter: blur(70px); opacity: var(--aur-opacity); mix-blend-mode: var(--aur-blend); will-change: transform; }
+.b1 { background: var(--aur-1); top: -16vmax; left: -34vmax; transform: rotate(-18deg); animation: aur1 26s ease-in-out infinite alternate; }
+.b2 { background: var(--aur-2); top: 18%; right: -50vmax; transform: rotate(22deg); animation: aur2 34s ease-in-out infinite alternate; }
+.b3 { background: var(--aur-3); bottom: -24vmax; left: -12vmax; transform: rotate(-8deg); animation: aur3 40s ease-in-out infinite alternate; opacity: calc(var(--aur-opacity) * .8); }
+@keyframes aur1 { to { transform: translate(28%, 18%) rotate(12deg) scale(1.15); } }
+@keyframes aur2 { to { transform: translate(-30%, 10%) rotate(-10deg) scale(.9); } }
+@keyframes aur3 { to { transform: translate(18%, -16%) rotate(14deg) scale(1.2); } }
+.par { position: absolute; inset: -30px; opacity: var(--stars-opacity); transition: transform .5s ease-out; }
+.p1 { transform: translate(calc(var(--px, 0) * 6px), calc(var(--py, 0) * 6px)); }
+.p2 { transform: translate(calc(var(--px, 0) * 16px), calc(var(--py, 0) * 16px)); }
+.stars { position: absolute; inset: 0; }
+.s1 {
+  background-image:
+    radial-gradient(1px 1px at 23px 41px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 97px 12px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 151px 88px, #dbeafe 50%, transparent 51%),
+    radial-gradient(1px 1px at 61px 132px, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 128px 163px, #e9d5ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 172px 31px, #fff 50%, transparent 51%);
+  background-size: 180px 190px; opacity: .75; animation: drift1 60s linear infinite;
+}
+.s2 {
+  background-image:
+    radial-gradient(1.6px 1.6px at 40px 70px, #fff 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 190px 20px, #a5f3fc 50%, transparent 51%),
+    radial-gradient(1.8px 1.8px at 120px 200px, #fff 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 230px 150px, #fecdd3 50%, transparent 51%);
+  background-size: 260px 240px; animation: drift2 90s linear infinite, twinkle 5s ease-in-out infinite alternate;
+}
+@keyframes drift1 { to { background-position: 0 -190px; } }
+@keyframes drift2 { to { background-position: 0 -240px; } }
+@keyframes twinkle { from { opacity: .45; } to { opacity: 1; } }
+
+/* ---------- Écran ---------- */
+#app { position: fixed; inset: 0; z-index: 1; display: flex; justify-content: center; }
+.screen {
+  position: relative; width: 100%; max-width: 640px; height: 100%;
+  display: flex; flex-direction: column; isolation: isolate;
+  animation: screenIn .28s ease-out;
+}
+@keyframes screenIn { from { opacity: 0; transform: translateY(6px); } }
+.app-top { display: flex; align-items: center; gap: 8px; padding: calc(env(safe-area-inset-top) + 10px) 12px 6px; }
+.scroll {
+  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: 6px 16px 20px; display: flex; flex-direction: column; gap: 14px;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.scroll::-webkit-scrollbar { display: none; }
+.scroll > * { flex-shrink: 0; }
+.bottom { padding: 10px 12px calc(12px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
+.bottom .row { display: flex; gap: 10px; }
+.screen.typing .hide-typing { display: none !important; }
+.screen.typing .bottom { padding-bottom: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important; animation-iteration-count: 1 !important;
+    animation-delay: 0s !important; transition-duration: .001ms !important; scroll-behavior: auto !important;
+  }
+}
