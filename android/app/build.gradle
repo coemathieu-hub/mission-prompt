@@ -1,5 +1,18 @@
 apply plugin: 'com.android.application'
 
+// Version : celle de package.json (versionCode calculé : 1.2.3 → 10203).
+def pkg = new groovy.json.JsonSlurper().parse(file('../../package.json'))
+def appVersion = pkg.version
+def appVersionCode = appVersion.tokenize('.').collect { it as int }.inject(0) { acc, n -> acc * 100 + n }
+
+// Signature de la version « release » : android/keystore.properties (jamais commité)
+// ou variables d'environnement (GitHub Actions). Voir README, section « APK signé ».
+def keystoreProps = new Properties()
+def keystoreFile = rootProject.file('keystore.properties')
+if (keystoreFile.exists()) keystoreFile.withInputStream { keystoreProps.load(it) }
+def signValue = { String key, String env -> keystoreProps.getProperty(key) ?: System.getenv(env) }
+def releaseStoreFile = signValue('storeFile', 'MP_KEYSTORE_PATH')
+
 android {
     namespace = "fr.missionprompt.app"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +20,8 @@ android {
         applicationId "fr.missionprompt.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,8 +29,19 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (releaseStoreFile) {
+                storeFile file(releaseStoreFile)
+                storePassword signValue('storePassword', 'MP_KEYSTORE_PASSWORD')
+                keyAlias signValue('keyAlias', 'MP_KEY_ALIAS')
+                keyPassword signValue('keyPassword', 'MP_KEY_PASSWORD')
+            }
+        }
+    }
     buildTypes {
         release {
+            if (releaseStoreFile) signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

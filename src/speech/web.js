@@ -1,6 +1,8 @@
 // Moteur « Web Speech API » (navigateur / PWA).
 // Chrome Android répète les résultats en mode continu : on y coupe le mode continu,
 // le contrôleur relance la session à chaque fin.
+// Note : on n'appelle pas SpeechRecognition.available() (reconnaissance sur l'appareil) :
+// sur certaines versions de Chromium, cet appel fait planter l'onglet.
 
 export function webSpeechCtor(win = globalThis) {
   return win.SpeechRecognition || win.webkitSpeechRecognition || null;
@@ -10,23 +12,12 @@ export function createWebEngine({ win = globalThis, android = /Android/i.test(gl
   const Ctor = webSpeechCtor(win);
   let handlers = {};
   let rec = null;
-  let local = null; // reconnaissance sur l'appareil disponible (Chrome récent)
-
-  async function checkLocal(lang) {
-    if (local !== null) return local;
-    try {
-      if (typeof Ctor?.available === 'function') {
-        local = (await Ctor.available({ langs: [lang], processLocally: true })) === 'available';
-      } else local = false;
-    } catch { local = false; }
-    return local;
-  }
 
   return {
     id: 'web',
     supported: !!Ctor,
     async ensurePermission() { return true; }, // le navigateur demande lui-même à la 1re écoute
-    async prepare(lang) { await checkLocal(lang); },
+    async prepare() {},
     on(h) { handlers = h; },
     start(lang = 'fr-FR') {
       if (!Ctor) throw new Error('not-available');
@@ -36,7 +27,6 @@ export function createWebEngine({ win = globalThis, android = /Android/i.test(gl
       r.continuous = !android;
       r.interimResults = true;
       r.maxAlternatives = 1;
-      if (local && 'processLocally' in r) r.processLocally = true;
       r.onstart = () => rec === r && handlers.start?.();
       r.onresult = e => {
         if (rec !== r) return;

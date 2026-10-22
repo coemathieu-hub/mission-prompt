@@ -5,7 +5,8 @@ const ua = globalThis.navigator?.userAgent || '';
 
 export const platform = {
   target: __TARGET__,
-  native: __TARGET__ === 'app' && !!globalThis.Capacitor?.isNativePlatform?.(),
+  // Évalué à la demande : le pont natif Capacitor peut s'injecter après le chargement du module.
+  get native() { return __TARGET__ === 'app' && !!globalThis.Capacitor?.isNativePlatform?.(); },
   ios: /iPad|iPhone|iPod/.test(ua) || (globalThis.navigator?.platform === 'MacIntel' && globalThis.navigator?.maxTouchPoints > 1),
   android: /Android/i.test(ua),
   standalone: !!(globalThis.matchMedia?.('(display-mode: standalone)').matches || globalThis.navigator?.standalone),
