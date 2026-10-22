@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
+import { FAKE_SPEECH } from './helpers.js';
 
 const SINGLE = fileURLToPath(new URL('../../dist/single/mission-prompt.html', import.meta.url));
 
@@ -24,6 +25,20 @@ test('fichier HTML autonome : marche hors ligne, sans aucune requête réseau', 
   const fontsLoaded = await page.evaluate(async () => { await document.fonts.ready; return document.fonts.check('16px "Inter Variable"'); });
   expect(fontsLoaded).toBe(true);
   expect(requests).toEqual([]);
+});
+
+test('fichier local : la dictée explique pourquoi elle ne marche pas', async ({ page }) => {
+  test.skip(!existsSync(SINGLE), 'Lancer « npm run build:single » avant');
+  await page.addInitScript({ path: FAKE_SPEECH });
+  await page.goto(`file://${SINGLE}`);
+  await page.locator('.tour .link-btn').click();
+  await page.click('.mission.demo .mission-open');
+  await page.locator('.planet').nth(2).click();
+  await page.click('.mic');
+  await page.evaluate(() => window.__speech.error('not-allowed'));
+  await expect(page.locator('.toast')).toContainText('simple fichier, même si le micro est autorisé pour Chrome');
+  await expect(page.locator('.dock-hint')).toContainText('fichier ouvert en local');
+  await expect(page.locator('.dock-retry')).toBeHidden();
 });
 
 test('PWA : relancée sans connexion après une première visite', async ({ page, context }) => {

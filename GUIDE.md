@@ -129,7 +129,9 @@ Touche **🚀 Nouvelle mission**. Une fusée avance de planète en planète, une
 ## 5. Questions fréquentes
 
 **🎤 Le micro ne marche pas ?**
-Autorise le micro : Android → Paramètres → Applications → Mission Prompt → Autorisations → Micro.
+- Tu as ouvert le fichier **`mission-prompt.html`** (depuis tes téléchargements ou dans un aperçu) ? Chrome y bloque la dictée, même si le micro est autorisé pour Chrome. Utilise la **version en ligne** ou l'**app Android**.
+- Dans Chrome, chaque site a **sa propre autorisation** : touche le **cadenas 🔒** à gauche de l'adresse → Autorisations → Micro → Autoriser, puis **« Réessayer le micro »**.
+- App Android : Paramètres → Applications → Mission Prompt → Autorisations → Micro.
 Sur iPhone (app installée sur l'écran d'accueil), utilise le **micro du clavier** 🎤 : il marche partout.
 
 **🛸 Où sont mes missions ?**

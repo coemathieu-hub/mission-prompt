@@ -23,24 +23,4 @@ export async function createEngine() {
   return web.supported ? web : nullEngine;
 }
 
-/** Messages clairs, sans jargon, pour chaque cause d'indisponibilité. */
-export function speechHelp(code) {
-  const keyboard = 'Tape ton idée, ou utilise le micro 🎤 de ton clavier.';
-  switch (code) {
-    case 'not-allowed':
-    case 'service-not-allowed':
-      return `🎤 Le micro est refusé. Autorise-le dans les réglages du téléphone (ou du navigateur). ${keyboard}`;
-    case 'audio-capture':
-      return `🎤 Aucun micro détecté. ${keyboard}`;
-    case 'network':
-      return `📶 La dictée a besoin d'Internet sur cet appareil. ${keyboard}`;
-    case 'silence':
-      return '⏸️ Je me suis mis en pause : plus rien entendu depuis un moment.';
-    case 'unsupported':
-    case 'not-available':
-    case 'no-start':
-    case 'restart-loop':
-    default:
-      return `🎤 La dictée n'est pas disponible ici. ${keyboard}`;
-  }
-}
+export { speechHelp, speechHint, canRetry, diagnose } from './help.js';

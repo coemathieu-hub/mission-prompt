@@ -88,12 +88,35 @@ test('sans moteur de dictée : bascule en mode texte avec un message clair', asy
   await expect(page.locator('textarea.idea-text:focus')).toBeVisible();
 });
 
-test('micro refusé : message et texte conservé', async ({ page }) => {
+test.describe('micro autorisé pour le site', () => {
+  test.use({ permissions: ['clipboard-read', 'clipboard-write', 'microphone'] });
+  test('micro indisponible malgré tout : message sans « refusé », texte conservé', async ({ page }) => {
   await toStep3(page);
   await page.click('.mic');
   await say(page, 'début conservé');
   await page.evaluate(() => window.__speech.error('not-allowed'));
-  await expect(page.locator('.toast')).toContainText('micro est refusé');
+  await expect(page.locator('.toast')).toContainText("Chrome n'a pas pu utiliser le micro");
+  await expect(page.locator('.toast')).not.toContainText('refusé');
   await expect(page.locator('.dock')).toHaveAttribute('data-mic', 'off');
   await expect(page.locator('textarea.idea-text')).toHaveValue('début conservé');
+  });
+});
+
+test('micro bloqué pour le site : explique le cadenas, puis « Réessayer » relance', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__micState = 'denied';
+    const q = navigator.permissions.query.bind(navigator.permissions);
+    navigator.permissions.query = d => (d && d.name === 'microphone' ? Promise.resolve({ state: window.__micState }) : q(d));
+  });
+  await toStep3(page);
+  await page.click('.mic');
+  await page.evaluate(() => window.__speech.error('not-allowed'));
+  await expect(page.locator('.toast')).toContainText('cadenas');
+  await expect(page.locator('.dock-hint')).toContainText('Micro bloqué pour ce site');
+  await page.evaluate(() => { window.__micState = 'granted'; });
+  await page.click('.dock-retry');
+  await expect(page.locator('.dock')).toHaveAttribute('data-mic', 'rec');
+  await say(page, 'ça marche');
+  await page.click(STOP);
+  await expect(page.locator('textarea.idea-text')).toHaveValue('ça marche');
 });

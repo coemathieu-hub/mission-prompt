@@ -50,7 +50,7 @@ npm run build:single
 Produit **un seul fichier** `dist/single/mission-prompt.html` (≈ 450 Ko) : CSS, JS, polices et icônes sont inclus. Il s'ouvre d'un double-clic, sans connexion.
 
 - Les missions sont gardées par le navigateur, pour ce fichier précis (même emplacement sur le disque).
-- La dictée n'est généralement **pas disponible** quand le fichier est ouvert en local : l'app bascule en mode texte. Utilise la dictée du clavier (Windows : `Win + H`, Mac : `Fn Fn`, téléphone : micro du clavier).
+- La dictée n'est **pas disponible** quand le fichier est ouvert en local (`file://`, `content://` sur Android) ou dans un aperçu intégré : Chrome refuse le micro à la page, même s'il est autorisé pour l'appli Chrome. L'app le détecte, l'explique et bascule en mode texte. Utilise la dictée du clavier (Windows : `Win + H`, Mac : `Fn Fn`, téléphone : micro du clavier).
 
 ## 3. PWA et mise en ligne sur GitHub Pages
 

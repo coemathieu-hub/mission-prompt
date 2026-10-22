@@ -81,7 +81,9 @@ export const FAQ = [
     q: '🎤 Le micro ne marche pas ?',
     a: [
       'La première fois, ton téléphone te demande l\'autorisation : réponds « Autoriser ».',
-      'Sur Android : Réglages > Applications > Mission Prompt > Autorisations > Micro.',
+      'Fichier « mission-prompt.html » ouvert en local, ou app affichée dans un aperçu (Claude, gestionnaire de fichiers…) : Chrome y bloque la dictée, même si le micro est autorisé pour Chrome. Utilise la version en ligne ou l\'app Android.',
+      'Dans Chrome, chaque site a sa propre autorisation, en plus de celle de l\'appli Chrome : touche le cadenas à gauche de l\'adresse > Autorisations > Micro > Autoriser, puis « Réessayer le micro ».',
+      'App Android : Paramètres > Applications > Mission Prompt > Autorisations > Micro.',
       'Sur iPhone, une fois l\'app sur l\'écran d\'accueil, la dictée intégrée n\'est pas toujours disponible. Utilise alors le micro 🎤 du clavier : il marche partout.',
       'La dictée utilise le moteur de reconnaissance de ton téléphone (Google ou Apple). Mission Prompt n\'envoie rien de son côté.',
     ],

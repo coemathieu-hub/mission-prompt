@@ -3,7 +3,8 @@
 import { h, icon } from './dom.js';
 import { toast } from './overlay.js';
 import { createDictation } from '../speech/dictation.js';
-import { speechHelp } from '../speech/index.js';
+import { speechHelp, speechHint, canRetry, diagnose } from '../speech/index.js';
+import { micForbiddenByFrame } from '../speech/help.js';
 import { convertDictatedPunctuation } from '../text/punctuation.js';
 import { haptic } from '../core/platform.js';
 
@@ -44,6 +45,7 @@ export function micDock(ctx, screen, defaultTarget) {
   const targetChip = h('span', { class: 'dock-target' });
   const info = h('div', { class: 'rec-info' }, h('span', { class: 'rec-dot' }), chrono, wave, stateWord);
   const hint = h('p', { class: 'dock-hint' });
+  const retryBtn = h('button', { class: 'link-btn dock-retry', hidden: true, onclick: retry }, '↻ Réessayer le micro');
   const micIcon = icon('mic', 'ic ic-xl');
   const micLabel = h('span', { class: 'mic-label' }, 'Démarrer');
   const micBtn = h('button', { class: 'mic', 'data-tour': 'mic', onclick: main }, micIcon);
@@ -54,6 +56,7 @@ export function micDock(ctx, screen, defaultTarget) {
     targetChip,
     info,
     hint,
+    retryBtn,
     h('div', { class: 'controls' },
       h('div', { class: 'side' }, trashBtn, 'Supprimer'),
       h('div', { class: 'center' }, micBtn, micLabel),
@@ -74,10 +77,7 @@ export function micDock(ctx, screen, defaultTarget) {
       // Indisponible : on valide ce qui a été dicté, puis bascule en mode texte.
       const text = await dictation.stop();
       if (text) target.commit(text);
-      ctx.speechOff = code;
-      target = defaultTarget;
-      setMode('off');
-      toast(speechHelp(code), { duration: 7000 });
+      disable(await diagnose(code, { native: ctx.engine.id === 'native' }));
     },
   });
 
@@ -91,22 +91,37 @@ export function micDock(ctx, screen, defaultTarget) {
     micLabel.textContent = ui.label;
     stateWord.textContent = next === 'pause' ? 'En pause' : "J'écoute";
     targetChip.textContent = next === 'idle' || next === 'off' ? '' : target.label;
-    hint.textContent = next === 'off'
-      ? speechHelp(typeof ctx.speechOff === 'string' ? ctx.speechOff : 'unsupported')
-      : target.hint || 'Touche le micro pour dicter';
+    const off = typeof ctx.speechOff === 'string' ? ctx.speechOff : 'unsupported';
+    hint.textContent = next === 'off' ? speechHint(off) : target.hint || 'Touche le micro pour dicter';
+    retryBtn.hidden = next !== 'off' || !canRetry(off);
     clearInterval(tick);
     if (next === 'rec') tick = setInterval(() => { chrono.textContent = fmt(dictation.view().elapsed); }, 250);
   }
 
   async function begin(t = defaultTarget) {
     if (mode === 'off') { t.focus?.(); return; }
-    if (!ctx.engine.supported) { ctx.speechOff = 'unsupported'; setMode('off'); toast(speechHelp('unsupported'), { duration: 7000 }); return; }
+    if (!ctx.engine.supported) return disable('unsupported');
+    if (ctx.engine.id === 'web' && micForbiddenByFrame()) return disable('frame');
     target = t;
     let allowed = true;
     try { allowed = await ctx.engine.ensurePermission(); } catch { allowed = false; }
-    if (!allowed) { ctx.speechOff = 'not-allowed'; target = defaultTarget; setMode('off'); toast(speechHelp('not-allowed'), { duration: 7000 }); return; }
+    if (!allowed) return disable(ctx.engine.id === 'native' ? 'app-denied' : 'not-allowed');
     haptic();
     dictation.start(target.begin());
+  }
+
+  /** Passe en mode texte en expliquant la vraie cause. */
+  function disable(reason) {
+    ctx.speechOff = reason;
+    target = defaultTarget;
+    setMode('off');
+    toast(speechHelp(reason), { duration: 8000 });
+  }
+
+  function retry() {
+    ctx.speechOff = false;
+    setMode('idle');
+    begin(defaultTarget);
   }
 
   function main() {
