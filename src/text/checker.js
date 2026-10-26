@@ -69,7 +69,6 @@ export function checkMission(m) {
   // Titre
   const titleWords = countWords(m.title);
   if (!titleWords) add('title-empty', 1, 'warn', 'Donne un titre à ta mission.');
-  else if (titleWords < 3) add('title-short', 1, 'warn', `Ton titre fait ${titleWords} mot${titleWords > 1 ? 's' : ''} : précise-le un peu (3 mots minimum).`);
 
   // Contexte
   if (!m.context) add('context', 2, 'warn', 'Choisis si le besoin est Pro ou Perso.');
@@ -136,7 +135,7 @@ export function checkMission(m) {
 
   // Jauge
   const fuelParts = {
-    title: titleWords >= 3 ? 12 : titleWords ? 6 : 0,
+    title: titleWords ? 12 : 0,
     context: m.context ? 8 : 0,
     goal: goalWords >= 5 ? 15 : goalWords ? 8 : 0,
     ideas: ideas.length ? 12 + (ideas.length >= 3 ? 8 : ideas.length === 2 ? 4 : 0) : 0,

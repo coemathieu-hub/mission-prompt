@@ -98,17 +98,20 @@ export async function saveFile(name, content, mime = 'text/plain') {
   return 'downloaded';
 }
 
-/** Ouvre le sélecteur de fichier. Résout avec le fichier choisi (ou null). */
-export function pickFile(accept = '') {
+/** Ouvre le sélecteur de fichiers (tous types par défaut). Résout avec la liste choisie. */
+export function pickFiles({ accept = '', multiple = true } = {}) {
   return new Promise(resolve => {
-    const input = Object.assign(document.createElement('input'), { type: 'file', accept });
+    const input = Object.assign(document.createElement('input'), { type: 'file', accept, multiple });
     input.style.display = 'none';
-    input.addEventListener('change', () => { resolve(input.files?.[0] || null); input.remove(); });
-    input.addEventListener('cancel', () => { resolve(null); input.remove(); });
+    input.addEventListener('change', () => { resolve([...(input.files || [])]); input.remove(); });
+    input.addEventListener('cancel', () => { resolve([]); input.remove(); });
     document.body.append(input);
     input.click();
   });
 }
+
+/** Un seul fichier (ex. import de sauvegarde). */
+export const pickFile = async (accept = '') => (await pickFiles({ accept, multiple: false }))[0] || null;
 
 /** Retour arrière Android et passage en arrière-plan. */
 export async function onAppEvents({ back, background }) {

@@ -1,4 +1,5 @@
 // Génération du prompt final (Markdown), prêt à coller dans Claude Code ou Claude.
+import { fileExt } from '../files/kinds.js';
 import {
   CONTEXTS, SOURCE_KINDS, DELIVERABLE_TYPES, TARGETS, CONSTRAINT_OPTIONS, CRITERIA_OPTIONS,
 } from '../data/defaults.js';
@@ -30,7 +31,8 @@ const listItem = (marker, text) => {
 
 function sourceBlock(s) {
   const kind = byId(SOURCE_KINDS, s.kind);
-  const parts = [`**${oneLine(s.name) || 'Fichier sans nom'}**`, kind?.label];
+  const ext = s.kind === 'other' ? fileExt(s.name) : '';
+  const parts = [`**${oneLine(s.name) || 'Fichier sans nom'}**`, ext ? `Fichier .${ext}` : kind?.label];
   if (s.role?.trim()) parts.push(`rôle : ${lowerFirst(oneLine(s.role))}`);
   if (s.description?.trim()) parts.push(oneLine(s.description));
   const out = [`- ${parts.filter(Boolean).join(' · ')}`];

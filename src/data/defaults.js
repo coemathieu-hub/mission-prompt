@@ -35,15 +35,17 @@ export const CONTEXTS = {
   perso: { emoji: '🏠', label: 'Perso' },
 };
 
+// Type d'une source : détecté automatiquement pour les fichiers (voir files/kinds.js),
+// choisi à la main seulement pour un lien ou un accès.
 export const SOURCE_KINDS = [
-  { id: 'pdf', emoji: '📄', label: 'PDF', accept: '.pdf,application/pdf' },
-  { id: 'image', emoji: '🖼️', label: 'Image', accept: 'image/jpeg,image/png,.jpg,.jpeg,.png' },
-  { id: 'excel', emoji: '📊', label: 'Excel / CSV', accept: '.xlsx,.xlsm,.xls,.csv,text/csv' },
-  { id: 'word', emoji: '📝', label: 'Word', accept: '.doc,.docx' },
-  { id: 'ppt', emoji: '📽️', label: 'PowerPoint', accept: '.ppt,.pptx' },
-  { id: 'link', emoji: '🔗', label: 'Lien web' },
-  { id: 'access', emoji: '🔑', label: 'Accès / connexion' },
-  { id: 'other', emoji: '📦', label: 'Autre', accept: '' },
+  { id: 'pdf', emoji: '📄', label: 'PDF' },
+  { id: 'image', emoji: '🖼️', label: 'Image' },
+  { id: 'excel', emoji: '📊', label: 'Excel / CSV' },
+  { id: 'word', emoji: '📝', label: 'Word' },
+  { id: 'ppt', emoji: '📽️', label: 'PowerPoint' },
+  { id: 'other', emoji: '📦', label: 'Fichier' },
+  { id: 'link', emoji: '🔗', label: 'Lien web', manual: true },
+  { id: 'access', emoji: '🔑', label: 'Accès / connexion', manual: true },
 ];
 
 export const SOURCE_ROLES = [

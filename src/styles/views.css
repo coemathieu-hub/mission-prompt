@@ -212,3 +212,12 @@ ins { color: var(--st-ready-fg); background: var(--st-ready-bg); text-decoration
 @media (min-width: 700px) {
   .screen { border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
 }
+
+/* Sources : ajout de fichiers (tous types, plusieurs à la fois, glisser-déposer) */
+.add-source { min-height: 58px; }
+.drop-hint { display: none; font-weight: 500; color: var(--text-2); }
+@media (pointer: fine) { .drop-hint { display: inline; } }
+.scroll.dropping { outline: 3px dashed var(--violet); outline-offset: -10px; border-radius: var(--r-lg); background: var(--chip-bg); }
+.add-link { align-self: center; }
+.source-todo { align-self: flex-start; min-height: 40px; padding: 0; font-size: 14px; }
+.kind-badge { font-size: 14.5px; font-weight: 650; padding: 8px 12px; border-radius: 12px; background: var(--chip-bg); color: var(--chip-fg); }

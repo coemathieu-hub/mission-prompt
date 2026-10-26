@@ -32,11 +32,18 @@ test('une mission complète, du titre au prompt copié', async ({ page }) => {
   await expect(page.locator('textarea.idea-text')).toHaveCount(3);
   await page.click('[data-tour="next"]');
 
-  // 4. Source Excel lue localement
-  await page.click('[data-tour="add-source"]');
-  const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('.pick-row .btn')]);
-  await chooser.setFiles({ name: 'tickets.csv', mimeType: 'text/csv', buffer: Buffer.from('N°;Client;Machine;Ouvert le\n1;ACME;Xerox C410;2026-10-01\n') });
-  await expect(page.locator('.sheet .sheet-summary')).toContainText('Client, Machine');
+  // 4. Deux fichiers d'un coup, type détecté, CSV lu localement
+  const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.click('[data-tour="add-source"]')]);
+  expect(chooser.isMultiple()).toBe(true);
+  await chooser.setFiles([
+    { name: 'tickets.csv', mimeType: 'text/csv', buffer: Buffer.from('N°;Client;Machine;Ouvert le\n1;ACME;Xerox C410;2026-10-01\n') },
+    { name: 'contrat-maintenance.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4') },
+  ]);
+  await expect(page.locator('.source')).toHaveCount(2);
+  await expect(page.locator('.source[data-kind="excel"] .sheet-summary')).toContainText('Client, Machine');
+  await page.click('[aria-label="Modifier tickets.csv"]');
+  await expect(page.locator('.kind-badge')).toContainText('Excel / CSV · détecté automatiquement');
+  await page.click('.chip[data-role="Données de départ"]');
   await page.click('[data-tour="source-save"]');
   await page.click('[data-tour="next"]');
 
@@ -64,6 +71,8 @@ test('une mission complète, du titre au prompt copié', async ({ page }) => {
   expect(prompt).toContain('2. Envoyer un récap le vendredi par mail.');
   expect(prompt).toContain('- **tickets.csv** · Excel / CSV');
   expect(prompt).toContain('  - Colonnes : N°, Client, Machine, Ouvert le');
+  expect(prompt).toContain('rôle : données de départ');
+  expect(prompt).toContain('- **contrat-maintenance.pdf** · PDF');
   expect(prompt).toContain('- Type : HTML autonome (un seul fichier .html)');
   expect(prompt).toContain('## Méthode');
   expect(prompt).not.toMatch(/euh|le le/);

@@ -32,13 +32,13 @@ describe('contrôleur de mission', () => {
   });
   it('titre court, idée courte, doublon, phrase longue', () => {
     const m = full();
-    m.title = 'Notes frais';
+    m.title = 'Devis';
     m.ideas.push(createIdea('Un graphique'));
     m.ideas.push(createIdea('saisir une dépense avec la date et le montant'));
     m.goal = Array.from({ length: 45 }, (_, i) => `mot${i}`).join(' ') + '.';
     const { alerts, fuel } = checkMission(m);
     const ids = alerts.map(a => a.id).join(' ');
-    expect(ids).toContain('title-short');
+    expect(ids).not.toContain('title');
     expect(ids).toContain('idea-short');
     expect(ids).toContain('idea-dup');
     expect(ids).toContain('long-');
@@ -73,5 +73,14 @@ describe('mentions de fichiers', () => {
   it('garde les fichiers à fournir', () => {
     expect(fileMentions(withIdea('Importer mon Excel des tarifs.')).map(x => x.word)).toEqual(['excel']);
     expect(fileMentions(withIdea('Le citoyen Excel')).map(x => x.word)).toEqual(['excel']);
+  });
+});
+
+describe('titre', () => {
+  it("pas de minimum de mots : un seul mot suffit pour faire le plein", () => {
+    const m = createMission({ title: 'Devis' });
+    const { alerts, fuelParts } = checkMission(m);
+    expect(alerts.some(a => a.id.startsWith('title'))).toBe(false);
+    expect(fuelParts.title).toBe(12);
   });
 });

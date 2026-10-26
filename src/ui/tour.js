@@ -10,7 +10,7 @@ export function tourSteps(demoId) {
     { route: at(3), target: '.traj', text: '<b>7 étapes = 7 planètes</b> : Titre, Pro/Perso, Besoin, Sources, Livrable, Relecture, Lancement. Touche une planète pour y aller.' },
     { route: at(3), target: '[data-tour="mic"]', text: '🎙️ <b>Touche pour dicter</b> (autorise le micro la 1re fois). ⏸️ Pause garde ton texte, ⏹️ Stop valide l\'idée, 🗑️ jette la prise.' },
     { route: at(3), target: '[data-tour="ideas"] .idea', text: 'Touche le texte d\'une idée pour <b>la modifier</b>. Déplace-la avec <b>↑ ↓</b> ou en glissant la poignée <b>⠿</b>.' },
-    { route: at(4), target: '[data-tour="add-source"]', text: 'Déclare ici <b>les fichiers utiles</b> (Excel, PDF, image…). Ils restent sur ton appareil : seules leurs infos vont dans le prompt.' },
+    { route: at(4), target: '[data-tour="add-source"]', text: 'Ajoute ici <b>les fichiers utiles</b>, tous types, <b>plusieurs d\'un coup</b>. Ils restent sur ton appareil : seules leurs infos vont dans le prompt.' },
     { route: at(7), target: '[data-tour="fuel-card"]', text: 'La jauge <b>Carburant ⛽</b> dit si ta mission est complète. Touche une alerte pour corriger l\'étape concernée.' },
     { route: at(7), target: '[data-tour="copy"]', text: '<b>Copie le prompt</b>, puis colle-le dans Claude Code ou dans Claude. Bon vol ! 🚀' },
   ];

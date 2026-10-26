@@ -6,7 +6,7 @@ export const BIP_TIPS = {
     'Salut 👋 Raconte-moi ton idée, <b>à la voix ou au clavier</b>. Je la transforme en prompt clair pour Claude.',
     'Une mission = un besoin. Tu peux en garder autant que tu veux ici 🛸',
   ],
-  1: ['Un bon titre tient en <b>3 à 8 mots</b>. Exemple : « Outil de suivi des notes de frais ».'],
+  1: ['Un titre <b>court et parlant</b> suffit. Exemple : « Suivi des notes de frais ».'],
   2: ['Pro ou Perso ? J\'ajoute <b>tes contraintes habituelles</b> dans le prompt, tu n\'as rien à retaper.'],
   3: ['Une idée = un bloc. Parle comme à un collègue, <b>je nettoie les « euh »</b> 😉'],
   4: ['Un Excel ? Je lis juste <b>les noms des onglets et des colonnes</b>. Ton fichier ne quitte jamais ton téléphone.'],
@@ -43,9 +43,10 @@ export const STEP_HELP = {
   4: {
     title: '📎 Sources & ressources',
     body: [
-      'Liste les fichiers utiles à Claude : Excel, PDF, images, liens…',
-      'Pour chacun : son nom, son rôle (données de départ, modèle…) et une description.',
-      'Pour un Excel ou un CSV, choisis le fichier : je note les onglets et les colonnes. Le fichier n\'est jamais copié ni envoyé.',
+      'Touche « Ajouter des fichiers » : tous les types sont acceptés, et tu peux en choisir plusieurs d\'un coup. Je reconnais le type tout seul.',
+      'Touche ✏️ sur un fichier pour préciser son rôle (données de départ, modèle…) et le décrire.',
+      'Pour un Excel ou un CSV, je note les onglets et les colonnes. Tes fichiers ne sont jamais copiés ni envoyés.',
+      'Un site web ou un accès (compte, connexion) ? Touche « Ajouter un lien ou un accès ».',
       'Rien à fournir ? Coche « Aucun fichier à fournir ».',
     ],
   },

@@ -53,7 +53,7 @@ La **🧪 Mission démo** est là pour t'entraîner. Supprime-la d'un geste avec
 Touche **🚀 Nouvelle mission**. Une fusée avance de planète en planète, une par étape.
 
 ### 🏷️ Étape 1 : le titre
-- Touche le gros bouton **🎙️** et dis ton titre. Exemple : « Outil de suivi des notes de frais ».
+- Touche le gros bouton **🎙️** et dis ton titre. Court, c'est très bien. Exemple : « Suivi des notes de frais ».
 - La première fois, le téléphone demande l'accès au micro : réponds **Autoriser**.
 - Touche **⏹️ Stop** pour valider. Puis **Suivant**.
 - Tu préfères écrire ? Tape directement dans le champ.
@@ -74,10 +74,12 @@ Touche **🚀 Nouvelle mission**. Une fusée avance de planète en planète, une
 4. Pour modifier un bloc : touche son texte. Pour le déplacer : **↑ ↓** ou glisse la poignée **⠿**.
 
 ### 📎 Étape 4 : les sources
-- Touche **Ajouter une source** si Claude a besoin d'un fichier (Excel, PDF, image, lien…).
-- Donne son **nom**, son **rôle** (ex : « données de départ ») et une **description**.
-- Pour un Excel : touche **Choisir le fichier**. L'app note les onglets et les colonnes.
-  Ton fichier reste sur ton téléphone, il n'est jamais envoyé.
+- Touche **Ajouter des fichiers** : **tous les types** sont acceptés, et tu peux en sélectionner **plusieurs d'un coup**.
+  Sur ordinateur, tu peux aussi les **glisser-déposer** sur l'écran.
+- L'app reconnaît le type toute seule (Excel, PDF, image, Word…). Pour un Excel ou un CSV, elle note les onglets et les colonnes.
+- Touche **✏️** sur un fichier pour préciser son **rôle** (ex : « données de départ ») et le décrire.
+- Un site web ou un accès (compte, connexion) ? Touche **Ajouter un lien ou un accès**.
+- Tes fichiers restent sur ton appareil, ils ne sont jamais envoyés.
 - Pas de fichier ? Active **Aucun fichier à fournir**.
 
 ### 🎯 Étape 5 : le livrable
