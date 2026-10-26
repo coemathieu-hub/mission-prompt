@@ -13,7 +13,8 @@ permissions:
 
 jobs:
   apk:
-    runs-on: ubuntu-latest
+    # Ubuntu 24.04 : le SDK Android y est préinstallé (ANDROID_HOME), licences acceptées.
+    runs-on: ubuntu-24.04
     env:
       MP_KEYSTORE_BASE64: ${{ secrets.MP_KEYSTORE_BASE64 }}
       MP_KEYSTORE_PASSWORD: ${{ secrets.MP_KEYSTORE_PASSWORD }}
@@ -30,7 +31,10 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - uses: android-actions/setup-android@v3
+      - name: SDK Android disponible
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          ls "$ANDROID_HOME/platforms" "$ANDROID_HOME/build-tools"
 
       - run: npm ci
       - run: npm test
