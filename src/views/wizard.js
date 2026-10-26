@@ -100,7 +100,7 @@ export function wizardView(ctx, { id, step }) {
     if (!scroll.contains(document.activeElement) || !document.activeElement.matches('textarea, input')) screen.classList.remove('typing');
   }, 120));
 
-  const nav = h('nav', { class: 'nav row hide-typing' },
+  const nav = h('nav', { class: 'nav row' },
     h('button', { class: 'btn', onclick: () => (n > 1 ? goto(n - 1) : ctx.nav('/')) }, icon('back'), n > 1 ? 'Retour' : 'Accueil'),
     n < 7 && h('button', { class: 'btn btn-primary', 'data-tour': 'next', onclick: () => goto(n + 1) }, 'Suivant', icon('next')),
   );

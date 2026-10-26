@@ -59,6 +59,13 @@ export function autosize(textarea) {
   };
   textarea.addEventListener('input', fit);
   requestAnimationFrame(fit);
+  // Largeur qui change (rotation, clavier) ou police chargée après coup : on recalcule.
+  let width = 0;
+  new ResizeObserver(([entry]) => {
+    const w = Math.round(entry.contentRect.width);
+    if (w && w !== width) { width = w; fit(); }
+  }).observe(textarea);
+  document.fonts?.ready.then(fit);
   return fit;
 }
 

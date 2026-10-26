@@ -1,7 +1,6 @@
 // Contrôleur de mission : alertes cliquables (avec l'étape à corriger) et jauge « Carburant ».
-import { countWords, splitSentences, normalize, wordRegExp } from './words.js';
+import { countWords, normalize, wordRegExp } from './words.js';
 
-const LONG_SENTENCE = 40;
 const SHORT_IDEA = 5;
 
 // Mots qui évoquent un fichier. kind = type de source attendu (null : générique).
@@ -17,11 +16,6 @@ const FILE_WORDS = [
 ].map(([word, kind]) => ({ word, kind, re: wordRegExp(`${word.replace(/ /g, '\\s+')}[sx]?`, 'iu') }));
 
 const KIND_NAMES = { excel: 'fichier Excel', pdf: 'PDF', image: 'image', word: 'document Word', ppt: 'PowerPoint' };
-
-const excerpt = text => {
-  const words = text.trim().split(/\s+/);
-  return words.slice(0, 6).join(' ') + (words.length > 6 ? '…' : '');
-};
 
 // « exporter en PDF », « générer un Excel » : c'est le résultat attendu, pas un fichier à fournir.
 const OUTPUT_BEFORE = /(?<![\p{L}])(?:export\p{L}*|g[ée]n[ée]r\p{L}*|cr[ée]\p{L}*|produi\p{L}*|sorti\p{L}*|t[ée]l[ée]charg\p{L}*|imprim\p{L}*|envoy\p{L}*|sous forme d['’]?|au format|en)\s+(?:(?:le|la|les|un|une|des|du|de|d['’]|tout|en|au|format|fichier|forme)\s+){0,3}$/iu;
@@ -39,16 +33,6 @@ export function fileMentions(m) {
     }
   }
   return found;
-}
-
-function textFields(m) {
-  return [
-    { step: 1, label: 'le titre', text: m.title },
-    { step: 2, label: 'les contraintes', text: m.contextConstraints },
-    { step: 3, label: "l'objectif", text: m.goal },
-    ...m.ideas.map((i, k) => ({ step: 3, label: `l'idée ${k + 1}`, text: i.text })),
-    ...m.sources.map(s => ({ step: 4, label: `la source « ${s.name || 'sans nom'} »`, text: s.description })),
-  ];
 }
 
 function similar(a, b) {
@@ -90,18 +74,6 @@ export function checkMission(m) {
     for (let b = a + 1; b < m.ideas.length; b++) {
       if (similar(m.ideas[a].text, m.ideas[b].text)) {
         add(`idea-dup-${m.ideas[a].id}-${m.ideas[b].id}`, 3, 'warn', `Les idées ${a + 1} et ${b + 1} se ressemblent beaucoup : fusionne-les ou supprime l'une d'elles.`);
-        quality++;
-      }
-    }
-  }
-
-  // Phrases trop longues
-  for (const field of textFields(m)) {
-    for (const sentence of splitSentences(field.text || '')) {
-      const n = countWords(sentence);
-      if (n > LONG_SENTENCE) {
-        add(`long-${field.label}-${normalize(sentence).slice(0, 24)}`, field.step, 'warn',
-          `Une phrase de ${n} mots dans ${field.label} (« ${excerpt(sentence)} ») : coupe-la en deux.`);
         quality++;
       }
     }

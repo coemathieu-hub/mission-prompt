@@ -92,11 +92,11 @@ export function stepLaunch({ ctx, m, scroll, bottom, save, tip, goto, onChecks }
     h('section', { class: 'glass prompt-card' }, tabs, preview, editor, resetLink),
   );
   bottom.append(
-    h('div', { class: 'row hide-typing' },
+    h('div', { class: 'row' },
       h('button', { class: 'icon-btn lg', 'aria-label': 'Étape précédente', onclick: () => goto(6) }, icon('back')),
       h('button', { class: 'btn btn-primary btn-xl', 'data-tour': 'copy', onclick: copy }, icon('copy'), 'Copier le prompt'),
     ),
-    h('div', { class: 'row hide-typing' },
+    h('div', { class: 'row' },
       h('button', { class: 'btn btn-stack', onclick: share }, icon('share'), 'Partager'),
       h('button', { class: 'btn btn-stack', onclick: exportMd }, icon('download'), 'Exporter'),
       h('button', { class: 'btn btn-stack', onclick: keep }, icon('save'), 'Enregistrer'),

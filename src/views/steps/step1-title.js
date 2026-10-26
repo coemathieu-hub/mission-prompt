@@ -4,7 +4,7 @@ import { fieldTarget, interimLine } from './fields.js';
 
 export function stepTitle({ ctx, m, screen, scroll, bottom, nav, save, tip, goto }) {
   const input = textField('textarea', {
-    id: 'title', class: 'input input-lg', rows: 1, maxlength: 140, value: m.title,
+    id: 'title', class: 'input input-lg', rows: 1, value: m.title, enterkeyhint: 'next',
     placeholder: 'Ex : Outil de suivi des notes de frais',
     oninput: () => { m.title = input.value.replace(/\n/g, ' '); save(); },
     onkeydown: e => { if (e.key === 'Enter') { e.preventDefault(); goto(2); } },

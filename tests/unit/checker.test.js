@@ -30,7 +30,7 @@ describe('contrôleur de mission', () => {
     expect(alerts.filter(a => a.level === 'warn')).toEqual([]);
     expect(fuel).toBe(100);
   });
-  it('titre court, idée courte, doublon, phrase longue', () => {
+  it('idée courte, doublon ; aucune limite de longueur', () => {
     const m = full();
     m.title = 'Devis';
     m.ideas.push(createIdea('Un graphique'));
@@ -41,7 +41,7 @@ describe('contrôleur de mission', () => {
     expect(ids).not.toContain('title');
     expect(ids).toContain('idea-short');
     expect(ids).toContain('idea-dup');
-    expect(ids).toContain('long-');
+    expect(ids).not.toContain('long-');
     expect(fuel).toBeLessThan(100);
   });
   it('fichier évoqué sans source déclarée', () => {
@@ -82,5 +82,17 @@ describe('titre', () => {
     const { alerts, fuelParts } = checkMission(m);
     expect(alerts.some(a => a.id.startsWith('title'))).toBe(false);
     expect(fuelParts.title).toBe(12);
+  });
+});
+
+describe('pas de limite de longueur', () => {
+  it('une idée très longue ne déclenche aucune alerte ni pénalité', () => {
+    const long = Array.from({ length: 400 }, (_, i) => `mot${i}`).join(' ');
+    const base = createMission({ title: 'X', context: 'pro', goal: 'Objectif clair et assez détaillé.', ideas: [createIdea('Une idée normale de plusieurs mots.')], noSources: true, reviewed: true,
+      deliverable: { type: 'html', typeOther: '', target: 'both', constraints: ['offline'], constraintsOther: '', criteria: ['calc'], criteriaOther: '' } });
+    const withLong = structuredClone(base);
+    withLong.ideas.push(createIdea(long));
+    expect(checkMission(withLong).alerts.filter(a => a.step === 3 && a.level === 'warn')).toEqual([]);
+    expect(checkMission(withLong).fuel).toBeGreaterThanOrEqual(checkMission(base).fuel);
   });
 });

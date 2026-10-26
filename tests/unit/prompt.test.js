@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { buildPrompt, finalPrompt, OPTIMIZE_PREAMBLE, METHOD } from '../../src/prompt/builder.js';
+import { buildPrompt, finalPrompt, OPTIMIZE_PREAMBLE, METHOD, QUESTIONS } from '../../src/prompt/builder.js';
 import { renderMarkdown } from '../../src/prompt/markdown.js';
 import { createMission, createIdea, createSource } from '../../src/core/mission.js';
 
@@ -43,6 +43,9 @@ Suivre mes notes de frais du mois.
 ## Critères de réussite
 - Les calculs sont justes
 - Total visible en haut
+
+## Questions à me poser d'abord
+${QUESTIONS}
 
 ## Méthode
 ${METHOD}`);
@@ -89,5 +92,17 @@ describe('méthode brainstorming', () => {
     const html = renderMarkdown(`## Méthode\n${METHOD}`);
     expect(html).toContain('<ol><li><strong>Comprends le pourquoi.</strong>');
     expect((html.match(/<li>/g) || []).length).toBe(6);
+  });
+});
+
+describe('questions à choix multiples', () => {
+  it('toujours demandées sur le projet et sur la charte graphique, dans les deux modes', () => {
+    for (const destination of ['code', 'opt']) {
+      const p = buildPrompt(createMission({ title: 'Test', destination }));
+      expect(p).toContain("## Questions à me poser d'abord");
+      expect(p).toContain('**sous forme de choix multiples**');
+      expect(p).toContain('**sur le projet**');
+      expect(p).toContain('**sur la charte graphique à mettre en place**');
+    }
   });
 });

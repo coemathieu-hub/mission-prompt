@@ -5,7 +5,12 @@ import {
 } from '../data/defaults.js';
 
 export const OPTIMIZE_PREAMBLE =
-  'Je veux faire réaliser ce besoin par Claude Code. Analyse-le, pose-moi tes questions à choix multiples si nécessaire, puis rédige le prompt Claude Code le plus complet et précis possible. Garde la section « Méthode » telle quelle dans le prompt final.';
+  `Je veux faire réaliser ce besoin par Claude Code. Analyse-le, pose-moi tes questions à choix multiples si nécessaire, puis rédige le prompt Claude Code le plus complet et précis possible. Garde les sections « Questions à me poser d'abord » et « Méthode » telles quelles dans le prompt final.`;
+
+// Toujours présent : questions à choix multiples sur le projet ET sur la charte graphique.
+export const QUESTIONS = `Avant de coder, pose-moi tes questions **sous forme de choix multiples**, une à la fois :
+- **sur le projet** : tout ce qui reste flou dans cette demande (usages, utilisateurs, données, priorités, cas particuliers) ;
+- **sur la charte graphique à mettre en place** : couleurs, typographies, style visuel, logo, ton, mise en page, composants.`;
 
 // Méthode « brainstorming » condensée : comprendre le pourquoi avant de construire.
 export const METHOD = `Avant d'écrire la moindre ligne de code :
@@ -81,6 +86,7 @@ export function buildPrompt(m) {
   ];
   if (criteria.length) out.push(`## Critères de réussite\n${criteria.map(c => `- ${c}`).join('\n')}`);
 
+  out.push(`## Questions à me poser d'abord\n${QUESTIONS}`);
   out.push(`## Méthode\n${METHOD}`);
 
   const body = out.join('\n\n');
