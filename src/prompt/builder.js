@@ -1,5 +1,6 @@
 // Génération du prompt final (Markdown), prêt à coller dans Claude Code ou Claude.
 import { fileExt } from '../files/kinds.js';
+import { BRAINSTORMING_SKILL_FR } from './skill-brainstorming.js';
 import {
   CONTEXTS, SOURCE_KINDS, DELIVERABLE_TYPES, TARGETS, CONSTRAINT_OPTIONS, CRITERIA_OPTIONS,
 } from '../data/defaults.js';
@@ -12,16 +13,14 @@ export const QUESTIONS = `Avant de coder, pose-moi tes questions **sous forme de
 - **sur le projet** : tout ce qui reste flou dans cette demande (usages, utilisateurs, données, priorités, cas particuliers) ;
 - **sur la charte graphique à mettre en place** : couleurs, typographies, style visuel, logo, ton, mise en page, composants.`;
 
-// Méthode « brainstorming » condensée : comprendre le pourquoi avant de construire.
-export const METHOD = `Avant d'écrire la moindre ligne de code :
-1. **Comprends le pourquoi.** Lis d'abord tout ce que je t'ai fourni (fichiers, projet existant) : ne me demande jamais ce qui y figure déjà. Si tout ce qui compte est dans cette demande, dis-le et passe à l'étape 3.
-2. **Questionne-moi une question à la fois**, sous forme de choix multiples, en commençant par le point qui changerait le plus ce que tu vas construire, et dis-moi pourquoi tu la poses. Reformule au fur et à mesure ce que tu as compris, en séparant ce que j'ai dit de ce que tu proposes, puis demande-moi ce qui manque.
-3. **Propose 2 ou 3 approches** dans un message dédié : ce que chacune implique et sacrifie, ta recommandation et pourquoi. Je choisis.
-4. **Rédige un document de conception** (court si la demande est petite) : intention, objectifs, non-objectifs, ce qui ferait échouer le projet même s'il fonctionne, contraintes, approche retenue, et les choix que tu as faits à ma place, signalés comme tels. Relis-le comme le développeur qui devrait le réaliser sans moi, et pose-moi en une fois les questions qui restent.
-5. **Attends mon accord sur ce document** : pas de code, pas d'installation, pas de création de projet avant.
-6. Ensuite seulement : un plan par étapes, puis le code étape par étape.
+// Méthode : le skill « brainstorming » complet (traduit), avec les deux règles de l'utilisateur qui priment.
+export const METHOD = `Applique à la lettre le skill « Brainstorming » ci-dessous : c'est le copié-collé, traduit en français, du skill que je t'ai donné. Ton partenaire humain, c'est moi.
 
-Si c'est visuel (écran, page, mise en page), propose-moi une maquette jetable avant de trancher. Si je te dis de foncer, fonce, en annonçant en une ligne tes choix techniques importants.`;
+Deux règles priment sur ce skill :
+- **Toutes tes questions sont à choix multiples**, une à la fois, avec toujours une option « Autre » pour que je puisse répondre avec mes mots. Cela remplace les passages du skill qui demandent des questions ouvertes ou déconseillent les menus.
+- **La charte graphique fait partie du terrain à couvrir** : pose-moi aussi tes questions à choix multiples sur la charte à mettre en place.
+
+${BRAINSTORMING_SKILL_FR}`;
 
 const byId = (list, id) => list.find(x => x.id === id);
 const lines = text => (text || '').split('\n').map(l => l.trim()).filter(Boolean);

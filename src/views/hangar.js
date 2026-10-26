@@ -6,6 +6,7 @@ import { checkMission } from '../text/checker.js';
 import { CONTEXTS, STATUSES } from '../data/defaults.js';
 import { BIP_TIPS } from '../data/help.js';
 import { normalize } from '../text/words.js';
+import { installApp, isInstalled } from '../ui/install.js';
 
 const FILTERS = [
   ['all', 'Toutes'], ['pro', '💼 Pro'], ['perso', '🏠 Perso'],
@@ -132,6 +133,7 @@ export function hangarView(ctx) {
     h('header', { class: 'app-top' },
       h('svg', { class: 'logo', 'aria-hidden': 'true', viewBox: '0 0 64 64', html: '<use href="#logo"/>' }),
       h('div', { class: 'brand', 'data-tour': 'brand' }, h('strong', {}, 'Mission Prompt'), h('small', {}, 'Tes idées → un prompt clair')),
+      !isInstalled() && h('button', { class: 'icon-btn', 'aria-label': 'Installer sur mon téléphone', 'data-tour': 'install', onclick: installApp }, '📲'),
       h('button', { class: 'icon-btn', 'aria-label': 'Aide', onclick: () => ctx.nav('/guide') }, '❓'),
     ),
     h('div', { class: 'scroll' },

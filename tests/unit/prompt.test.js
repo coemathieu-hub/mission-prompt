@@ -76,22 +76,27 @@ describe('aperçu Markdown', () => {
   });
 });
 
-describe('méthode brainstorming', () => {
-  it('pose le cadre : pourquoi, une question à la fois, approches, conception validée avant le code', () => {
+describe('méthode : skill brainstorming complet', () => {
+  it('le skill traduit est collé en entier, avec les deux règles qui priment', () => {
     const p = buildPrompt(createMission({ title: 'Test' }));
     const method = p.slice(p.indexOf('## Méthode'));
-    expect(method).toContain('Comprends le pourquoi');
-    expect(method).toContain('une question à la fois');
-    expect(method).toContain('choix multiples');
-    expect(method).toContain('Propose 2 ou 3 approches');
-    expect(method).toContain('document de conception');
-    expect(method).toContain('Attends mon accord');
-    expect(method).toMatch(/Si je te dis de foncer, fonce/);
+    expect(method).toContain('Applique à la lettre le skill « Brainstorming »');
+    expect(method).toContain('**Toutes tes questions sont à choix multiples**');
+    expect(method).toContain('**La charte graphique fait partie du terrain à couvrir**');
+    for (const part of ["#### D'abord : que sais-tu vraiment ?", '#### Regarde avant de demander', '#### Ton premier message',
+      '#### La conversation', '#### Reformule au fur et à mesure', '#### Dimensionner le travail', '#### La conception écrite',
+      '<HARD-GATE>', '</HARD-GATE>', "#### Signaux d'alerte", '#### Compagnon visuel', '**Présenter les approches.**']) {
+      expect(method).toContain(part);
+    }
+    expect(method).not.toMatch(/builder-check-prompt\.md|visual-companion\.md/);
   });
-  it('rendu Markdown : liste numérotée avec titres en gras', () => {
+  it('rendu Markdown : tableaux, citations et sous-titres', () => {
     const html = renderMarkdown(`## Méthode\n${METHOD}`);
-    expect(html).toContain('<ol><li><strong>Comprends le pourquoi.</strong>');
-    expect((html.match(/<li>/g) || []).length).toBe(6);
+    expect((html.match(/<table>/g) || []).length).toBe(2);
+    expect(html).toContain('<th>Taille</th>');
+    expect(html).toContain('<blockquote>');
+    expect(html).toContain("<h4>D&#39;abord : que sais-tu vraiment ?</h4>");
+    expect(html).toContain('&lt;HARD-GATE&gt;');
   });
 });
 

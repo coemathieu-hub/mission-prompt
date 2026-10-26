@@ -109,10 +109,10 @@ Touche **🚀 Nouvelle mission**. Une fusée avance de planète en planète, une
 1. Ouvre ton terminal dans le dossier de ton projet.
 2. Lance `claude`.
 3. Colle le prompt : **Ctrl + V** (Mac : **Cmd + V**), puis **Entrée**.
-4. Le prompt demande à Claude Code de **comprendre avant de coder** :
-   - il te pose ses questions **une à la fois**, en choix multiples ;
+4. Le prompt contient le **skill « brainstorming » complet** (en français) et demande à Claude Code de l'appliquer à la lettre :
+   - il te pose ses questions **une à la fois, en choix multiples**, sur le projet **et sur la charte graphique** ;
    - il te propose **2 ou 3 façons de faire** et tu choisis ;
-   - il écrit un court **document de conception** et **attend ton accord** ;
+   - il écrit un **document de conception** et **attend ton accord** ;
    - ensuite seulement, il fait un plan et code étape par étape.
    Pressé ? Réponds-lui « fonce » : il passe directement à l'action.
 

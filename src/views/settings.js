@@ -3,6 +3,7 @@ import { h, icon, autosize, textField, pressGroup } from '../ui/dom.js';
 import { toast, confirmBox } from '../ui/overlay.js';
 import { saveFile, pickFile, setVibrations } from '../core/platform.js';
 import { applyTheme } from '../ui/theme.js';
+import { installApp } from '../ui/install.js';
 import { createDemoMission } from '../data/demo.js';
 import { DEFAULT_GLOSSARY, DEFAULT_FILLERS } from '../data/defaults.js';
 import { tabbar, homeButton } from './hangar.js';
@@ -131,6 +132,7 @@ export function settingsView(ctx) {
         h('div', { class: 'input-row' }, fillerInput, h('button', { class: 'icon-btn', 'aria-label': 'Ajouter le mot', onclick: addFiller }, icon('plus'))),
         h('button', { class: 'link-btn', onclick: async () => { await update({ fillers: [...DEFAULT_FILLERS] }); renderFillers(); } }, 'Valeurs d\'origine')),
       section('🎓 Aide',
+        h('button', { class: 'btn btn-block', onclick: installApp }, '📲 Installer sur mon téléphone'),
         h('button', { class: 'btn btn-block', onclick: () => ctx.startTour() }, '🎓 Revoir le tuto'),
         h('button', { class: 'btn btn-block', onclick: reloadDemo }, '🧪 Remettre la mission démo'),
         h('button', { class: 'btn btn-block', onclick: () => ctx.nav('/guide') }, '📖 Ouvrir le guide')),

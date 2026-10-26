@@ -221,3 +221,15 @@ ins { color: var(--st-ready-fg); background: var(--st-ready-bg); text-decoration
 .add-link { align-self: center; }
 .source-todo { align-self: flex-start; min-height: 40px; padding: 0; font-size: 14px; }
 .kind-badge { font-size: 14.5px; font-weight: 650; padding: 8px 12px; border-radius: 12px; background: var(--chip-bg); color: var(--chip-fg); }
+
+/* Aperçu du prompt : sous-titres, citations et tableaux du skill */
+.md h4, .md h5, .md h6 { font-family: var(--font-title); font-size: 14.5px; margin: 12px 0 4px; }
+.md blockquote { margin: 6px 0; padding: 6px 12px; border-left: 3px solid var(--violet); background: var(--chip-bg); border-radius: 0 10px 10px 0; }
+.md blockquote p { margin: 0; }
+.md table { width: 100%; border-collapse: collapse; margin: 6px 0 10px; font-size: 13.5px; display: block; overflow-x: auto; }
+.md th, .md td { border: 1px solid var(--line-strong); padding: 6px 8px; text-align: left; vertical-align: top; }
+.md th { background: var(--chip-bg); }
+.install-steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px; font-size: 15.5px; line-height: 1.45; }
+a.link-btn { display: inline-flex; align-items: center; text-decoration: none; }
+.md th, .md td { overflow-wrap: normal; word-break: normal; hyphens: auto; }
+.md td:first-child, .md th:first-child { min-width: 7.5em; }

@@ -5,6 +5,7 @@ import { toast } from './overlay.js';
 import { createDictation } from '../speech/dictation.js';
 import { speechHelp, speechHint, canRetry, diagnose } from '../speech/index.js';
 import { micForbiddenByFrame } from '../speech/help.js';
+import { ONLINE_URL } from './install.js';
 import { convertDictatedPunctuation } from '../text/punctuation.js';
 import { haptic } from '../core/platform.js';
 
@@ -46,6 +47,7 @@ export function micDock(ctx, screen, defaultTarget) {
   const info = h('div', { class: 'rec-info' }, h('span', { class: 'rec-dot' }), chrono, wave, stateWord);
   const hint = h('p', { class: 'dock-hint' });
   const retryBtn = h('button', { class: 'link-btn dock-retry', hidden: true, onclick: retry }, '↻ Réessayer le micro');
+  const onlineLink = h('a', { class: 'link-btn dock-retry dock-online', hidden: true, href: ONLINE_URL || '#', target: '_blank', rel: 'noopener' }, '🌐 Ouvrir la version en ligne (avec micro)');
   const micIcon = icon('mic', 'ic ic-xl');
   const micLabel = h('span', { class: 'mic-label' }, 'Démarrer');
   const micBtn = h('button', { class: 'mic', 'data-tour': 'mic', onclick: main }, micIcon);
@@ -57,6 +59,7 @@ export function micDock(ctx, screen, defaultTarget) {
     info,
     hint,
     retryBtn,
+    onlineLink,
     h('div', { class: 'controls' },
       h('div', { class: 'side' }, trashBtn, 'Supprimer'),
       h('div', { class: 'center' }, micBtn, micLabel),
@@ -94,6 +97,7 @@ export function micDock(ctx, screen, defaultTarget) {
     const off = typeof ctx.speechOff === 'string' ? ctx.speechOff : 'unsupported';
     hint.textContent = next === 'off' ? speechHint(off) : target.hint || 'Touche le micro pour dicter';
     retryBtn.hidden = next !== 'off' || !canRetry(off);
+    onlineLink.hidden = next !== 'off' || !ONLINE_URL || !['file', 'frame'].includes(off);
     clearInterval(tick);
     if (next === 'rec') tick = setInterval(() => { chrono.textContent = fmt(dictation.view().elapsed); }, 250);
   }

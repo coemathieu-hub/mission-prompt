@@ -38,7 +38,7 @@ test('fichier local : la dictée explique pourquoi elle ne marche pas', async ({
   await page.evaluate(() => window.__speech.error('not-allowed'));
   await expect(page.locator('.toast')).toContainText('simple fichier, même si le micro est autorisé pour Chrome');
   await expect(page.locator('.dock-hint')).toContainText('fichier ouvert en local');
-  await expect(page.locator('.dock-retry')).toBeHidden();
+  await expect(page.locator('.dock-retry:not(.dock-online)')).toBeHidden();
 });
 
 test('PWA : relancée sans connexion après une première visite', async ({ page, context }) => {

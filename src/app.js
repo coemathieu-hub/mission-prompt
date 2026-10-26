@@ -1,5 +1,6 @@
 // Démarrage, routeur (#/…) et contexte partagé entre les écrans.
 import { injectSprite } from './ui/icons.js';
+import './ui/install.js'; // capte tôt la proposition d'installation du navigateur
 import { mountSky } from './ui/sky.js';
 import { applyTheme, watchSystemTheme } from './ui/theme.js';
 import { toast } from './ui/overlay.js';
