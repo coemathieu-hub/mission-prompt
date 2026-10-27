@@ -90,3 +90,22 @@ test('bouton Accueil présent sur chaque écran', async ({ page }) => {
     await expect(page.locator('.screen.hangar')).toBeVisible();
   }
 });
+
+test('titre très long : la carte reste compacte (2 lignes + aperçu), le titre complet est gardé', async ({ page }) => {
+  await openApp(page);
+  await page.click('[data-tour="new"]');
+  const long = 'Cave à vin, une application pour la gestion de mon vin ' + 'avec le domaine, l\'appellation et le millésime '.repeat(20);
+  await page.fill('#title', long);
+  await page.locator('.planet').nth(2).click();
+  await page.fill('#goal', 'Gérer le stock de ma cave et être prévenu avant qu\'un vin ne soit trop vieux.');
+  await page.click('[data-tour="home"]');
+  const card = page.locator('.mission', { hasText: 'Cave à vin' });
+  const box = await card.boundingBox();
+  expect(box.height).toBeLessThan(160);
+  await expect(card.locator('.m-preview')).toHaveText(/^Gérer le stock de ma cave/);
+  const lines = await card.locator('.m-title').evaluate(el => Math.round(el.getBoundingClientRect().height / parseFloat(getComputedStyle(el).lineHeight)));
+  expect(lines).toBeLessThanOrEqual(2);
+  await card.locator('.mission-open').click();
+  await page.locator('.planet').nth(0).click();
+  await expect(page.locator('#title')).toHaveValue(long);
+});

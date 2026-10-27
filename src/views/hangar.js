@@ -8,6 +8,15 @@ import { BIP_TIPS } from '../data/help.js';
 import { normalize } from '../text/words.js';
 import { installApp, isInstalled } from '../ui/install.js';
 
+/** Titre raccourci pour les libellés (menus, confirmations, lecteur d'écran). */
+const shortTitle = (m, n = 60) => {
+  const t = (m.title || 'Mission sans titre').replace(/\s+/g, ' ').trim();
+  return t.length > n ? `${t.slice(0, n).replace(/\s+\S*$/, '')}…` : t;
+};
+
+/** Aperçu d'une ligne sous le titre : l'objectif, sinon la première idée. */
+const previewOf = m => (m.goal || m.ideas.find(i => i.text.trim())?.text || '').replace(/\s+/g, ' ').trim();
+
 const FILTERS = [
   ['all', 'Toutes'], ['pro', '💼 Pro'], ['perso', '🏠 Perso'],
   ['draft', '📝 Brouillon'], ['ready', '✅ Prête'], ['sent', '📤 Envoyée'],
@@ -60,7 +69,7 @@ export function hangarView(ctx) {
     if (!m.demo) {
       const ok = await confirmBox({
         title: 'Supprimer la mission ?',
-        message: `« ${m.title || 'Mission sans titre'} » sera supprimée de cet appareil.`,
+        message: `« ${shortTitle(m)} » sera supprimée de cet appareil.`,
         ok: 'Supprimer', danger: true,
       });
       if (!ok) return;
@@ -72,7 +81,7 @@ export function hangarView(ctx) {
   }
 
   function actions(m) {
-    menu(m.title || 'Mission sans titre', [
+    menu(shortTitle(m, 40), [
       { emoji: '✏️', label: 'Rouvrir', action: () => open(m) },
       { emoji: '📄', label: 'Dupliquer', action: () => { store.duplicate(m.id); render(); toast('Mission dupliquée'); } },
       { emoji: '🗑️', label: 'Supprimer', danger: true, action: () => remove(m) },
@@ -83,10 +92,11 @@ export function hangarView(ctx) {
     const fuel = checkMission(m).fuel;
     const st = STATUSES[m.status] || STATUSES.draft;
     return h('article', { class: `mission glass${m.demo ? ' demo' : ''}` },
-      h('button', { class: 'mission-open', onclick: () => open(m), 'aria-label': `Ouvrir ${m.title || 'Mission sans titre'}` },
+      h('button', { class: 'mission-open', onclick: () => open(m), 'aria-label': `Ouvrir ${shortTitle(m)}`, title: m.title || null },
         h('span', { class: 'm-ico', 'aria-hidden': 'true' }, m.demo ? '🧪' : CONTEXTS[m.context]?.emoji || '🚀'),
         h('span', { class: 'm-main' },
           h('span', { class: 'm-title' }, m.demo ? `Mission démo · ${m.title}` : m.title || 'Mission sans titre'),
+          previewOf(m) && h('span', { class: 'm-preview' }, previewOf(m)),
           h('span', { class: 'm-meta' },
             m.demo ? h('span', { class: 'status st-demo' }, "🧪 Pour t'entraîner") : h('span', { class: `status st-${m.status}` }, `${st.emoji} ${st.label}`),
             m.context && h('span', {}, `${CONTEXTS[m.context].emoji} ${CONTEXTS[m.context].label}`),
@@ -99,7 +109,7 @@ export function hangarView(ctx) {
       ),
       m.demo
         ? h('button', { class: 'icon-btn ghost', 'aria-label': 'Supprimer la mission démo', 'data-tour': 'demo-delete', onclick: () => remove(m) }, icon('trash'))
-        : h('button', { class: 'icon-btn ghost', 'aria-label': `Actions pour ${m.title || 'cette mission'}`, onclick: () => actions(m) }, icon('more')),
+        : h('button', { class: 'icon-btn ghost', 'aria-label': `Actions pour ${shortTitle(m)}`, onclick: () => actions(m) }, icon('more')),
     );
   }
 
